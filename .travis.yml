@@ -32,8 +32,8 @@ before_script:
   - 'if [ "$BUILD" = "1" ]; then git clone https://github.com/ckeditor/ckeditor-presets.git; fi'
   - 'if [ "$BUILD" = "1" ]; then cd ckeditor-presets; fi'
   - 'if [ "$BUILD" = "1" ]; then git fetch --all; fi'
-  - 'if [ "$BUILD" = "1" ]; then git checkout master; fi'
-  - 'if [ "$BUILD" = "1" ]; then git reset --hard origin/master; fi'
+  - 'if [ "$BUILD" = "1" ]; then git checkout $TRAVIS_BRANCH; fi'
+  - 'if [ "$BUILD" = "1" ]; then git reset --hard origin/$TRAVIS_BRANCH; fi'
 
   # Update submodules to use HTTPS instead of SSH.
   - 'if [ "$BUILD" = "1" ]; then sed -i -e "s/git\@/https:\/\//g" .gitmodules; fi'
@@ -57,6 +57,5 @@ before_script:
   - 'export DISPLAY=:99.0'
 
 script:
-  - 'if [ "$BUILD" = "0" ] || [ "$BUILD" = "1" ] && [ "$TRAVIS_PULL_REQUEST" != "false" ]; then bender run -c bender.ci.js; fi'
-  - 'if [ "$BUILD" = "1" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ]; then exit 0; fi'
+  - 'if [ "$BUILD" = "0" ] || [ "$TRAVIS_PULL_REQUEST" != "false" ]; then bender run -c bender.ci.js; fi'
 
