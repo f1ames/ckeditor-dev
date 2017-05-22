@@ -23,7 +23,7 @@ addons:
 before_script:
   - 'npm install benderjs-cli -g'
 
-  # Test build version only for PRs since every change goes through PR process.
+  # Build CKEditor only for PRs since every change eventually goes through PR process.
   - 'RUN_BUILD=0'
   - 'if [ "$BUILD" = "1" ] && [ "$TRAVIS_PULL_REQUEST" != "false" ]; then RUN_BUILD=1; fi'
 
