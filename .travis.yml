@@ -23,6 +23,10 @@ addons:
 before_script:
   - 'npm install benderjs-cli -g'
 
+  # Test build version only for PRs since every change goes through PR process.
+  #- 'RUN_BUILD=1'
+  #- 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then RUN_BUILD=0; fi'
+
   # Clone and setup ckeditor-presets repository.
   - 'if [ "$BUILD" = "1" ]; then cd ..; fi'
   - 'if [ "$BUILD" = "1" ]; then git clone https://github.com/ckeditor/ckeditor-presets.git; fi'
@@ -52,4 +56,7 @@ before_script:
   - 'sh -e /etc/init.d/xvfb start'
   - 'export DISPLAY=:99.0'
 
-script: 'bender run -c bender.ci.js'
+script:
+  - 'if [ "$BUILD" = "0" ] || [ "$BUILD" = "1" ] && [ "$TRAVIS_PULL_REQUEST" != "false" ]; then bender run -c bender.ci.js; fi'
+  - 'if [ "$BUILD" = "1" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ]; then exit 0; fi'
+
